@@ -85,13 +85,7 @@ module OpenID
 
         # TESTS
 
-        def test_check_no_assoc_handle
-          @checkid_req.instance_variable_set('@assoc', nil)
-          msg = assert_log_matches("Generated checkid") {
-            @checkid_req.get_message(@realm, @return_to, immediate)
-          }
-          assert_openid_key_absent(msg, 'assoc_handle')
-        end
+
 
         def test_check_with_assoc_handle
           msg = assert_log_matches("Generated checkid") {
@@ -118,6 +112,13 @@ module OpenID
           post_args = msg.to_post_args()
           assert_equal('brown', post_args['openid.ext0.color'])
           assert_equal('paper', post_args['openid.ext0.material'])
+        end
+
+        def test_no_assoc_handle
+          msg = assert_log_matches("Generated checkid") {
+            @checkid_req.get_message(@realm, @return_to, immediate)
+          }
+          assert_openid_key_absent(msg, 'assoc_handle')
         end
 
         def test_standard

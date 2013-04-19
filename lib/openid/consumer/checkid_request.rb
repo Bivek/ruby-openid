@@ -121,7 +121,7 @@ module OpenID
           end
         end
 
-        if @assoc
+        if @assoc && !message.is_openid2 && ['checkid_setup', 'checkid_immediate'].include?(mode)
           message.set_arg(OPENID_NS, 'assoc_handle', @assoc.handle)
           assoc_log_msg = "with assocication #{@assoc.handle}"
         else
@@ -163,9 +163,9 @@ module OpenID
       # documentation for help with the parameters.
       def html_markup(realm, return_to=nil, immediate=false,
                       form_tag_attrs=nil)
-        Util.auto_submit_html(form_markup(realm, 
-                                          return_to, 
-                                          immediate, 
+        Util.auto_submit_html(form_markup(realm,
+                                          return_to,
+                                          immediate,
                                           form_tag_attrs))
       end
 
